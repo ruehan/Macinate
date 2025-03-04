@@ -474,7 +474,7 @@ export default function FinderApp() {
 					</div>
 					<input
 						type="text"
-						className="w-full py-1 pl-8 pr-8 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+						className="w-full py-1 pl-8 pr-8 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
 						placeholder="파일 검색..."
 						value={searchQuery}
 						onChange={(e) => handleSearch(e.target.value)}

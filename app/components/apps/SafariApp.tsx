@@ -376,20 +376,22 @@ export default function SafariApp() {
 	const renderWebContent = () => {
 		if (activeTab.url === "about:blank") {
 			return (
-				<div className="flex flex-col items-center justify-center h-full bg-gray-100">
-					<h2 className="text-2xl font-semibold text-gray-700 mb-4">새 탭</h2>
+				<div className="flex flex-col items-center justify-center h-full bg-gray-100 text-black">
+					<h2 className="text-2xl font-semibold text-gray-900 mb-4">새 탭</h2>
 					<div className="flex flex-wrap justify-center gap-4 max-w-2xl">
 						{/* 자주 방문하는 사이트 바로가기 */}
-						{["https://www.google.com", "https://www.naver.com", "https://www.youtube.com"].map((url) => (
-							<div key={url} className="w-24 h-24 bg-white rounded-lg shadow-md flex flex-col items-center justify-center p-2 cursor-pointer hover:bg-gray-50" onClick={() => loadUrl(url)}>
-								<img src={`https://www.google.com/s2/favicons?domain=${url}&sz=64`} alt="" className="w-12 h-12 mb-2" />
-								<span className="text-xs text-center truncate w-full">{getDomainFromUrl(url)}</span>
+						{[
+							{ url: "https://www.google.com", name: "Google", color: "bg-blue-100", textColor: "text-blue-600" },
+							{ url: "https://www.naver.com", name: "Naver", color: "bg-green-100", textColor: "text-green-600" },
+							{ url: "https://www.youtube.com", name: "YouTube", color: "bg-red-100", textColor: "text-red-600" },
+						].map((site) => (
+							<div key={site.url} className="w-24 h-24 bg-white rounded-lg shadow-md flex flex-col items-center justify-center p-2 cursor-pointer hover:bg-gray-50" onClick={() => loadUrl(site.url)}>
+								<div className={`w-12 h-12 ${site.color} rounded-full flex items-center justify-center ${site.textColor} mb-2`}>
+									<span className="text-xl font-bold">{site.name[0]}</span>
+								</div>
+								<span className="text-xs text-center text-gray-900 truncate w-full">{site.name}</span>
 							</div>
 						))}
-						<p className="text-yellow-700 text-sm">현재 보안 정책 문제로 인해 외부 웹사이트를 직접 표시할 수 없습니다.</p>
-						<div className="mt-3 text-xs text-yellow-600 bg-yellow-100 p-2 rounded">
-							<p>다음 업데이트에서는 더 많은 웹사이트를 볼 수 있도록 개선될 예정입니다.</p>
-						</div>
 					</div>
 				</div>
 			);
@@ -421,43 +423,47 @@ export default function SafariApp() {
 					</div>
 				) : (
 					<div className="flex flex-col items-center justify-center h-full bg-white p-8">
-						<div className="max-w-2xl w-full bg-gray-50 rounded-lg shadow-lg p-6">
+						<div className="max-w-2xl w-full bg-gray-100 rounded-lg shadow-lg p-6">
 							<div className="flex items-center mb-6">
-								<div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-500 mr-4">
+								<div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center text-blue-600 mr-4">
 									<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
 									</svg>
 								</div>
 								<div>
-									<h2 className="text-xl font-bold text-gray-800">{getDomainFromUrl(activeTab.url)}</h2>
-									<p className="text-gray-500 text-sm">{activeTab.url}</p>
+									<h2 className="text-xl font-bold text-gray-900">{getDomainFromUrl(activeTab.url)}</h2>
+									<p className="text-gray-600 text-sm">{activeTab.url}</p>
 								</div>
 							</div>
 
-							<div className="bg-white rounded-lg p-4 mb-6 border border-gray-200">
-								<h3 className="text-lg font-semibold text-gray-700 mb-2">보안 정책 알림</h3>
-								<p className="text-gray-600 mb-4">이 웹사이트는 현재 iframe에서 로드할 수 없습니다. 대부분의 웹사이트는 보안상의 이유로 iframe 내에서 표시되는 것을 제한하고 있습니다.</p>
-								<div className="bg-blue-50 p-3 rounded text-blue-700 text-sm">
+							<div className="bg-white rounded-lg p-4 mb-6 border border-gray-300">
+								<h3 className="text-lg font-semibold text-gray-900 mb-2">보안 정책 알림</h3>
+								<p className="text-gray-700 mb-4">이 웹사이트는 현재 iframe에서 로드할 수 없습니다. 대부분의 웹사이트는 보안상의 이유로 iframe 내에서 표시되는 것을 제한하고 있습니다.</p>
+								<div className="bg-blue-100 p-3 rounded text-blue-800 text-sm">
 									<p>X-Frame-Options: SAMEORIGIN 또는 Content-Security-Policy 헤더로 인해 iframe 내에서 콘텐츠를 표시할 수 없습니다.</p>
 								</div>
 							</div>
 
-							<div className="bg-gray-100 p-4 rounded-lg">
-								<h3 className="text-md font-medium text-gray-700 mb-2">웹사이트 정보</h3>
+							<div className="bg-gray-200 p-4 rounded-lg">
+								<h3 className="text-md font-medium text-gray-900 mb-2">웹사이트 정보</h3>
 								<div className="grid grid-cols-2 gap-2 text-sm">
-									<div className="text-gray-500">URL:</div>
-									<div className="text-gray-700 font-mono truncate">{activeTab.url}</div>
-									<div className="text-gray-500">도메인:</div>
-									<div className="text-gray-700">{getDomainFromUrl(activeTab.url)}</div>
+									<div className="text-gray-700">URL:</div>
+									<div className="text-gray-900 font-mono truncate">{activeTab.url}</div>
+									<div className="text-gray-700">도메인:</div>
+									<div className="text-gray-900">{getDomainFromUrl(activeTab.url)}</div>
 								</div>
 							</div>
 
-							<div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+							<div className="mt-6 bg-yellow-100 border border-yellow-300 rounded-lg p-4">
 								<div className="flex items-center mb-2">
-									<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+									<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-600 mr-2" viewBox="0 0 20 20" fill="currentColor">
 										<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zm-1 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
 									</svg>
-									<h3 className="text-md font-semibold text-yellow-700">개발 중인 기능</h3>
+									<h3 className="text-md font-semibold text-yellow-800">개발 중인 기능</h3>
+								</div>
+								<p className="text-yellow-800 text-sm">현재 보안 정책 문제로 인해 외부 웹사이트를 직접 표시할 수 없습니다. 개발팀이 이 문제를 해결하기 위해 작업 중입니다.</p>
+								<div className="mt-3 text-xs text-yellow-800 bg-yellow-200 p-2 rounded">
+									<p>다음 업데이트에서는 더 많은 웹사이트를 볼 수 있도록 개선될 예정입니다. 불편을 드려 죄송합니다.</p>
 								</div>
 							</div>
 						</div>
@@ -468,26 +474,45 @@ export default function SafariApp() {
 	};
 
 	return (
-		<div className="flex flex-col h-full bg-white">
+		<div className="flex flex-col h-full bg-white text-black">
 			{/* 탭 바 */}
 			<div className="flex items-center bg-gray-100 border-b border-gray-200">
 				<div className="flex-1 flex overflow-x-auto">
 					{tabs.map((tab) => (
 						<div
 							key={tab.id}
-							className={`flex items-center min-w-[120px] max-w-[200px] h-8 px-3 mr-1 rounded-t-md cursor-pointer ${tab.id === activeTabId ? "bg-white border-b-0" : "bg-gray-200 hover:bg-gray-300"}`}
+							className={`flex items-center min-w-[120px] max-w-[200px] h-8 px-3 mr-1 rounded-t-md cursor-pointer ${
+								tab.id === activeTabId ? "bg-white border-b-0 text-black" : "bg-gray-200 hover:bg-gray-300 text-gray-700"
+							}`}
 							onClick={() => changeTab(tab.id)}
 						>
-							{tab.isLoading ? <FiRefreshCw size={12} className="text-blue-500 animate-spin mr-1" /> : tab.favicon ? <img src={tab.favicon} alt="" className="w-4 h-4 mr-1" /> : null}
+							{tab.isLoading ? (
+								<div className="text-blue-500 animate-spin mr-1 w-4 h-4">
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+										/>
+									</svg>
+								</div>
+							) : tab.favicon ? (
+								<img src={tab.favicon} alt="" className="w-4 h-4 mr-1" />
+							) : null}
 							<div className="flex-1 truncate text-sm">{tab.title}</div>
 							<button className="ml-2 text-gray-500 hover:text-gray-700" onClick={(e) => closeTab(tab.id, e)}>
-								<FiX size={14} />
+								<svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+								</svg>
 							</button>
 						</div>
 					))}
 				</div>
 				<button className="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded-full mx-1" onClick={createNewTab}>
-					<FiPlus size={18} />
+					<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+					</svg>
 				</button>
 			</div>
 
@@ -498,27 +523,34 @@ export default function SafariApp() {
 					onClick={goBack}
 					disabled={!canGoBack}
 				>
-					<FiChevronLeft size={18} />
+					<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+					</svg>
 				</button>
 				<button
 					className={`w-8 h-8 flex items-center justify-center rounded-full mr-1 ${canGoForward ? "text-gray-600 hover:bg-gray-200" : "text-gray-400 cursor-not-allowed"}`}
 					onClick={goForward}
 					disabled={!canGoForward}
 				>
-					<FiChevronRight size={18} />
+					<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+					</svg>
 				</button>
 				<button className="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded-full mr-1" onClick={refresh}>
-					<FiRefreshCw size={16} className={activeTab.isLoading ? "animate-spin" : ""} />
+					<svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${activeTab.isLoading ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+					</svg>
 				</button>
 				<button className="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded-full mr-1" onClick={goHome}>
-					<FiHome size={16} />
+					<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7m-14 0l2 2m0 0l7 7 7-7m-14 0l2-2" />
+					</svg>
 				</button>
 
 				<form onSubmit={handleUrlSubmit} className="flex-1 flex">
 					<input
-						ref={inputRef}
 						type="text"
-						className="flex-1 px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+						className="flex-1 px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
 						value={inputUrl}
 						onChange={(e) => setInputUrl(e.target.value)}
 						placeholder="Search or enter website name"
@@ -527,7 +559,7 @@ export default function SafariApp() {
 			</div>
 
 			{/* 웹 페이지 표시 영역 */}
-			<div className="flex-1 bg-white overflow-hidden">{renderWebContent()}</div>
+			<div className="flex-1 bg-white overflow-hidden text-black">{renderWebContent()}</div>
 		</div>
 	);
 }
