@@ -50,9 +50,38 @@ const fileSystemReducer = (state: FileSystemState, action: FileSystemAction): Fi
 			};
 
 		case "DELETE_ITEM":
+			const itemIdToDelete = action.payload.id;
+
+			const itemToDelete = state.items.find((item) => item.id === itemIdToDelete);
+
+			if (!itemToDelete) {
+				return state;
+			}
+
+			let idsToDelete = [itemIdToDelete];
+
+			if (itemToDelete.type === "folder") {
+				const collectChildIds = (parentId: string): string[] => {
+					const childItems = state.items.filter((item) => item.parentId === parentId);
+					let childIds: string[] = [];
+
+					childItems.forEach((child) => {
+						childIds.push(child.id);
+						if (child.type === "folder") {
+							childIds = [...childIds, ...collectChildIds(child.id)];
+						}
+					});
+
+					return childIds;
+				};
+
+				const childIds = collectChildIds(itemIdToDelete);
+				idsToDelete = [...idsToDelete, ...childIds];
+			}
+
 			return {
 				...state,
-				items: state.items.filter((item) => item.id !== action.payload.id),
+				items: state.items.filter((item) => !idsToDelete.includes(item.id)),
 			};
 
 		case "RENAME_ITEM":
