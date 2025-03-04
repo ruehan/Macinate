@@ -6,14 +6,14 @@ interface Size {
 }
 
 // 리사이즈 방향 타입 추가
-export type ResizeDirection = "bottom" | "right" | "bottom-right";
+export type ResizeDirection = "bottom" | "right" | "bottom-right" | "left" | "top" | "top-left" | "top-right" | "bottom-left";
 
 interface UseResizableOptions {
 	initialSize?: Size;
 	minSize?: Size;
 	maxSize?: Size;
 	onResizeStart?: (size: Size) => void;
-	onResize?: (size: Size) => void;
+	onResize?: (size: Size, positionDelta?: { x: number; y: number }) => void;
 	onResizeEnd?: (size: Size) => void;
 	disabled?: boolean;
 }
@@ -98,31 +98,92 @@ export default function useResizable({
 			// 새 크기 계산 (방향에 따라 다르게 처리)
 			let newWidth = resizeOriginRef.current.elementWidth;
 			let newHeight = resizeOriginRef.current.elementHeight;
+			// 위치 조정을 위한 변수
+			let positionDeltaX = 0;
+			let positionDeltaY = 0;
 
-			// 방향에 따라 너비/높이 조정
+			// 방향에 따라 너비/높이 조정 및 위치 조정
 			switch (currentDirectionRef.current) {
 				case "right":
-					newWidth += deltaX;
+					// 오른쪽으로 리사이징: 왼쪽 고정, 너비만 변경
+					newWidth = resizeOriginRef.current.elementWidth + deltaX;
 					break;
+
 				case "bottom":
-					newHeight += deltaY;
+					// 아래로 리사이징: 위쪽 고정, 높이만 변경
+					newHeight = resizeOriginRef.current.elementHeight + deltaY;
 					break;
+
+				case "left":
+					// 왼쪽으로 리사이징: 오른쪽 고정, 너비 변경 및 위치 조정
+					newWidth = resizeOriginRef.current.elementWidth - deltaX;
+					positionDeltaX = deltaX;
+					break;
+
+				// case "top":
+				// 	// 위로 리사이징: 아래쪽 고정, 높이 변경 및 위치 조정
+				// 	newHeight = resizeOriginRef.current.elementHeight - deltaY;
+				// 	positionDeltaY = deltaY;
+				// 	break;
+
+				// case "top-left":
+				// 	// 왼쪽 위로 리사이징: 오른쪽 아래 고정, 너비/높이 변경 및 위치 조정
+				// 	newWidth = resizeOriginRef.current.elementWidth - deltaX;
+				// 	newHeight = resizeOriginRef.current.elementHeight - deltaY;
+				// 	positionDeltaX = deltaX;
+				// 	positionDeltaY = deltaY;
+				// 	break;
+
+				// case "top-right":
+				// 	// 오른쪽 위로 리사이징: 왼쪽 아래 고정, 너비/높이 변경 및 위치 조정
+				// 	newWidth = resizeOriginRef.current.elementWidth + deltaX;
+				// 	newHeight = resizeOriginRef.current.elementHeight - deltaY;
+				// 	positionDeltaY = deltaY;
+				// 	break;
+
+				case "bottom-left":
+					// 왼쪽 아래로 리사이징: 오른쪽 위 고정, 너비/높이 변경 및 위치 조정
+					newWidth = resizeOriginRef.current.elementWidth - deltaX;
+					newHeight = resizeOriginRef.current.elementHeight + deltaY;
+					positionDeltaX = deltaX;
+					break;
+
 				case "bottom-right":
 				default:
-					newWidth += deltaX;
-					newHeight += deltaY;
+					// 오른쪽 아래로 리사이징: 왼쪽 위 고정, 너비/높이만 변경
+					newWidth = resizeOriginRef.current.elementWidth + deltaX;
+					newHeight = resizeOriginRef.current.elementHeight + deltaY;
 					break;
 			}
 
 			// 최소/최대 크기 제한 적용
+			const oldWidth = newWidth;
+			const oldHeight = newHeight;
+
 			newWidth = Math.max(minSize.width, Math.min(maxSize.width, newWidth));
 			newHeight = Math.max(minSize.height, Math.min(maxSize.height, newHeight));
+
+			// 최소/최대 크기 제한으로 인해 크기가 조정된 경우 위치 델타도 조정
+			if (["left", "top-left", "bottom-left"].includes(currentDirectionRef.current)) {
+				// 최소/최대 크기 제한으로 너비가 조정된 경우, 위치 델타 조정
+				positionDeltaX = positionDeltaX * (newWidth / oldWidth);
+			}
+
+			if (["top", "top-left", "top-right"].includes(currentDirectionRef.current)) {
+				// 최소/최대 크기 제한으로 높이가 조정된 경우, 위치 델타 조정
+				positionDeltaY = positionDeltaY * (newHeight / oldHeight);
+			}
 
 			const newSize = { width: newWidth, height: newHeight };
 			setSize(newSize);
 
 			if (onResize) {
-				onResize(newSize);
+				// 위치 조정이 필요한 경우에만 positionDelta 전달
+				if (positionDeltaX !== 0 || positionDeltaY !== 0) {
+					onResize(newSize, { x: positionDeltaX, y: positionDeltaY });
+				} else {
+					onResize(newSize);
+				}
 			}
 		};
 

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import useDraggable from "~/hooks/useDraggable";
 import useResizable, { ResizeDirection } from "~/hooks/useResizable";
@@ -19,6 +19,7 @@ interface WindowFrameProps {
 export default function WindowFrame({ window, onClose, onMinimize, onMaximize, onFocus, onMove, onResize, children }: WindowFrameProps) {
 	const windowRef = useRef<HTMLDivElement>(null);
 	const contentRef = useRef<HTMLDivElement>(null);
+	const titleBarRef = useRef<HTMLDivElement>(null);
 
 	// 드래그 기능 설정
 	const { handleRef: dragHandleRef } = useDraggable({
@@ -30,7 +31,18 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 	// 리사이즈 기능 설정
 	const { handleRef: resizeHandleRef } = useResizable({
 		initialSize: window.size,
-		onResize,
+		onResize: (newSize, positionDelta) => {
+			// 크기 변경 처리
+			onResize(newSize);
+
+			// 위치 조정이 필요한 경우 (왼쪽/위쪽 방향 리사이징)
+			if (positionDelta) {
+				onMove({
+					x: window.position.x + positionDelta.x,
+					y: window.position.y + positionDelta.y,
+				});
+			}
+		},
 		disabled: window.isMaximized,
 	});
 
@@ -40,8 +52,6 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			scale: 1,
 			opacity: 1,
 			transition: { type: "spring", stiffness: 300, damping: 25 },
-			// top: window.position.y,
-			// left: window.position.x,
 		},
 		minimized: {
 			scale: 0.5,
@@ -57,6 +67,9 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			transition: { duration: 0.3 },
 		},
 	};
+
+	// 현재 드래그 중인지 여부
+	const [isDragging, setIsDragging] = useState(false);
 
 	// 창 클릭 시 포커스 설정
 	useEffect(() => {
@@ -86,23 +99,40 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			return;
 		}
 
-		const handleElement = dragHandleRef.current;
-		if (handleElement) {
-			// 드래그 핸들의 mousedown 이벤트를 시뮬레이션
-			const customEvent = new MouseEvent("mousedown", {
-				bubbles: true,
-				cancelable: true,
-				clientX: e.clientX,
-				clientY: e.clientY,
-				button: 0,
-			});
-
-			handleElement.dispatchEvent(customEvent);
+		// 리사이즈 핸들에서는 드래그 처리하지 않음 (클래스명으로 식별)
+		if ((e.target as HTMLElement).classList.contains("resize-handle")) {
+			return;
 		}
+
+		// 타이틀 바 영역에서만 드래그 활성화
+		if (titleBarRef.current && titleBarRef.current.contains(e.target as Node)) {
+			setIsDragging(true);
+
+			const handleElement = dragHandleRef.current;
+			if (handleElement) {
+				// 드래그 핸들의 mousedown 이벤트를 시뮬레이션
+				const customEvent = new MouseEvent("mousedown", {
+					bubbles: true,
+					cancelable: true,
+					clientX: e.clientX,
+					clientY: e.clientY,
+					button: 0,
+				});
+
+				handleElement.dispatchEvent(customEvent);
+			}
+		}
+	};
+
+	// 드래그 종료 처리
+	const handleDragEnd = () => {
+		setIsDragging(false);
 	};
 
 	// 리사이즈 방향 처리 함수
 	const handleResizeStart = (direction: ResizeDirection) => (e: React.MouseEvent) => {
+		e.stopPropagation(); // 이벤트 버블링 방지
+
 		const handleElement = resizeHandleRef.current;
 		if (handleElement) {
 			// 원래 리사이즈 핸들의 mousedown 이벤트를 시뮬레이션하면서 방향 정보 추가
@@ -122,9 +152,6 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 
 			handleElement.dispatchEvent(customEvent);
 		}
-
-		// 이벤트 전파 중지
-		e.stopPropagation();
 	};
 
 	// 창이 숨겨져 있으면 렌더링하지 않음
@@ -149,27 +176,38 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			variants={variants}
 			initial="open"
 			onMouseDown={handleDragStart}
+			onMouseUp={handleDragEnd}
 		>
 			{/* 드래그 핸들 (숨겨진 요소) */}
 			<div ref={dragHandleRef as React.RefObject<HTMLDivElement>} className="hidden" />
 
 			{/* 창 제목 표시줄 */}
-			<WindowTitleBar title={window.title} onClose={onClose} onMinimize={onMinimize} onMaximize={onMaximize} isFocused={window.isFocused} appIcon={window.appIcon} />
+			<div ref={titleBarRef}>
+				<WindowTitleBar title={window.title} onClose={onClose} onMinimize={onMinimize} onMaximize={onMaximize} isFocused={window.isFocused} appIcon={window.appIcon} />
+			</div>
 
 			{/* 창 내용 */}
 			<div ref={contentRef} className="h-full overflow-auto p-4">
 				{children}
 			</div>
 
-			{/* 리사이즈 핸들 (우측 하단, 하단, 우측) */}
+			{/* 리사이즈 핸들 */}
 			{!window.isMaximized && (
 				<>
-					{/* 우측 하단 핸들 */}
-					<div ref={resizeHandleRef as React.RefObject<HTMLDivElement>} className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize" style={{ touchAction: "none" }} />
+					{/* 우측 하단 핸들 (기본 핸들) */}
+					<div ref={resizeHandleRef as React.RefObject<HTMLDivElement>} className="resize-handle absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize z-50" style={{ touchAction: "none" }} />
+
 					{/* 하단 핸들 */}
-					<div className="absolute bottom-0 left-4 right-4 h-2 cursor-ns-resize" style={{ touchAction: "none" }} onMouseDown={handleResizeStart("bottom")} />
+					<div className="resize-handle absolute bottom-0 left-8 right-8 h-2 cursor-ns-resize z-50" style={{ touchAction: "none" }} onMouseDown={handleResizeStart("bottom")} />
+
 					{/* 우측 핸들 */}
-					<div className="absolute top-4 bottom-4 right-0 w-2 cursor-ew-resize" style={{ touchAction: "none" }} onMouseDown={handleResizeStart("right")} />
+					<div className="resize-handle absolute top-10 bottom-8 right-0 w-2 cursor-ew-resize z-50" style={{ touchAction: "none" }} onMouseDown={handleResizeStart("right")} />
+
+					{/* 상단 핸들 - 타이틀바 위의 영역으로 확장 */}
+					<div className="resize-handle absolute top-0 left-8 right-8 h-1 cursor-ns-resize z-50" style={{ touchAction: "none" }} onMouseDown={handleResizeStart("top")} />
+
+					{/* 우측 상단 핸들 */}
+					<div className="resize-handle absolute top-0 right-0 w-4 h-4 cursor-nesw-resize z-50" style={{ touchAction: "none" }} onMouseDown={handleResizeStart("top-right")} />
 				</>
 			)}
 		</motion.div>
