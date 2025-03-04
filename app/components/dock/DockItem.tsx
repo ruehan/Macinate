@@ -67,7 +67,7 @@ export default function DockItem({ id, name, icon }: DockItemProps) {
 
 	return (
 		<motion.div
-			className="flex flex-col items-center mx-1 relative"
+			className="flex flex-col items-center justify-center mx-1 relative"
 			onHoverStart={() => setIsHovered(true)}
 			onHoverEnd={() => setIsHovered(false)}
 			whileHover={{ scale: 1.2, y: -10 }}
@@ -75,7 +75,7 @@ export default function DockItem({ id, name, icon }: DockItemProps) {
 			onClick={launchApp}
 		>
 			{/* 앱 아이콘 */}
-			<div className="w-12 h-12 relative">
+			<div className="w-12 h-12 relative flex items-center justify-center">
 				{icon.endsWith(".svg") ? (
 					<img src={icon} alt={name} className="w-full h-full rounded-lg" />
 				) : (
