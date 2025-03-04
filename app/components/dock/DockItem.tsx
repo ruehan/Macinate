@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useWindow } from "~/store/WindowContext";
 import WelcomeApp from "~/components/apps/WelcomeApp";
 import FinderApp from "~/components/apps/FinderApp";
+import SafariApp from "~/components/apps/SafariApp";
 
 interface DockItemProps {
 	id: string;
@@ -35,8 +36,8 @@ export default function DockItem({ id, name, icon }: DockItemProps) {
 				appSize = { width: 800, height: 500 };
 				break;
 			case "safari":
-				appContent = <div>Safari 앱 (구현 예정)</div>;
-				appSize = { width: 800, height: 600 };
+				appContent = <SafariApp />;
+				appSize = { width: 900, height: 600 };
 				break;
 			case "notes":
 				appContent = <div>Notes 앱 (구현 예정)</div>;
