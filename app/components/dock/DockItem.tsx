@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useWindow } from "~/store/WindowContext";
+import WelcomeApp from "~/components/apps/WelcomeApp";
 
 interface DockItemProps {
 	id: string;
@@ -9,6 +11,57 @@ interface DockItemProps {
 
 export default function DockItem({ id, name, icon }: DockItemProps) {
 	const [isHovered, setIsHovered] = useState(false);
+	const { openWindow, state } = useWindow();
+
+	const isRunning = state.windows.some((window) => window.id === id);
+
+	const launchApp = () => {
+		if (isRunning) {
+			const runningWindow = state.windows.find((window) => window.id === id);
+			if (runningWindow && runningWindow.isMinimized) {
+			} else {
+				return;
+			}
+		}
+
+		let appContent;
+		let appTitle = name;
+		let appSize = { width: 600, height: 400 };
+
+		switch (id) {
+			case "finder":
+				appContent = <div>Finder 앱 (구현 예정)</div>;
+				break;
+			case "safari":
+				appContent = <div>Safari 앱 (구현 예정)</div>;
+				appSize = { width: 800, height: 600 };
+				break;
+			case "notes":
+				appContent = <div>Notes 앱 (구현 예정)</div>;
+				appSize = { width: 500, height: 400 };
+				break;
+			default:
+				appContent = <WelcomeApp />;
+		}
+
+		const windowCount = state.windows.length;
+		const position = {
+			x: 100 + ((windowCount * 20) % 200),
+			y: 50 + ((windowCount * 20) % 200),
+		};
+
+		openWindow({
+			id,
+			title: appTitle,
+			content: appContent,
+			isOpen: true,
+			isMinimized: false,
+			isMaximized: false,
+			position,
+			size: appSize,
+			appIcon: icon,
+		});
+	};
 
 	return (
 		<motion.div
@@ -17,6 +70,7 @@ export default function DockItem({ id, name, icon }: DockItemProps) {
 			onHoverEnd={() => setIsHovered(false)}
 			whileHover={{ scale: 1.2, y: -10 }}
 			transition={{ type: "spring", stiffness: 300, damping: 20 }}
+			onClick={launchApp}
 		>
 			{/* 앱 아이콘 */}
 			<div className="w-12 h-12 relative">
@@ -36,7 +90,7 @@ export default function DockItem({ id, name, icon }: DockItemProps) {
 			)}
 
 			{/* 실행 중 표시 점 */}
-			<div className="w-1 h-1 bg-white rounded-full mt-1"></div>
+			{isRunning && <div className="w-1 h-1 bg-white rounded-full mt-1"></div>}
 		</motion.div>
 	);
 }
