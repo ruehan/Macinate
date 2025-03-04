@@ -1,6 +1,7 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import { WindowProvider } from "~/store/WindowContext";
+import { FileSystemProvider } from "~/store/FileSystemContext";
 
 import "./tailwind.css";
 
@@ -38,7 +39,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
 	return (
 		<WindowProvider>
-			<Outlet />
+			<FileSystemProvider>
+				<Outlet />
+			</FileSystemProvider>
 		</WindowProvider>
 	);
 }

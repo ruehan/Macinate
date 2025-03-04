@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useWindow } from "~/store/WindowContext";
 import WelcomeApp from "~/components/apps/WelcomeApp";
+import FinderApp from "~/components/apps/FinderApp";
 
 interface DockItemProps {
 	id: string;
@@ -30,7 +31,8 @@ export default function DockItem({ id, name, icon }: DockItemProps) {
 
 		switch (id) {
 			case "finder":
-				appContent = <div>Finder 앱 (구현 예정)</div>;
+				appContent = <FinderApp />;
+				appSize = { width: 800, height: 500 };
 				break;
 			case "safari":
 				appContent = <div>Safari 앱 (구현 예정)</div>;
@@ -74,7 +76,11 @@ export default function DockItem({ id, name, icon }: DockItemProps) {
 		>
 			{/* 앱 아이콘 */}
 			<div className="w-12 h-12 relative">
-				<div className="w-12 h-12 bg-gray-300 rounded-lg flex items-center justify-center text-xs">{name.substring(0, 1)}</div>
+				{icon.endsWith(".svg") ? (
+					<img src={icon} alt={name} className="w-full h-full rounded-lg" />
+				) : (
+					<div className="w-12 h-12 bg-gray-300 rounded-lg flex items-center justify-center text-xs">{name.substring(0, 1)}</div>
+				)}
 			</div>
 
 			{/* 앱 이름 툴팁 */}

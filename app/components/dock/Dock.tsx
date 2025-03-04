@@ -4,7 +4,7 @@ import DockItem from "./DockItem";
 
 // 독에 표시할 앱 목록
 const dockItems = [
-	{ id: "finder", name: "Finder", icon: "/icons/finder.png" },
+	{ id: "finder", name: "Finder", icon: "/icons/finder.svg" },
 	{ id: "safari", name: "Safari", icon: "/icons/safari.png" },
 	{ id: "mail", name: "Mail", icon: "/icons/mail.png" },
 	{ id: "messages", name: "Messages", icon: "/icons/messages.png" },
