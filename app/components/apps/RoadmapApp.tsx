@@ -160,6 +160,14 @@ const initialItems: RoadmapItem[] = [
 		priority: "medium",
 		createdAt: "2025-03-18T11:30:00.000Z",
 	},
+	{
+		id: "19",
+		title: "편의성 개선",
+		description: "편의성 개선 기능 구현",
+		status: "in-progress",
+		priority: "medium",
+		createdAt: "2025-03-18T11:30:00.000Z",
+	},
 ];
 
 const RoadmapApp: React.FC = () => {
@@ -250,8 +258,8 @@ const RoadmapApp: React.FC = () => {
 
 	// 날짜 포맷팅
 	const formatDate = (dateString: string, status: string) => {
-		// 예정된 항목은 날짜를 표시하지 않음
-		if (status === "planned") {
+		// 예정된 항목과 진행 중인 항목은 날짜를 표시하지 않음
+		if (status === "planned" || status === "in-progress") {
 			return "";
 		}
 
