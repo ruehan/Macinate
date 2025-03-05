@@ -45,7 +45,7 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 					isMaximized: false,
 					position: { x: 100, y: 50 },
 					size: { width: 700, height: 500 },
-					appIcon: "/icons/settings.svg",
+					appIcon: icon,
 				});
 				break;
 			case "notes":
@@ -58,7 +58,7 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 					isMaximized: false,
 					position: { x: 100, y: 50 },
 					size: { width: 600, height: 400 },
-					appIcon: "/icons/notes.svg",
+					appIcon: icon,
 				});
 				break;
 			case "finder":
@@ -71,7 +71,7 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 					isMaximized: false,
 					position: { x: 200, y: 150 },
 					size: { width: 700, height: 500 },
-					appIcon: "/icons/finder.svg",
+					appIcon: icon,
 				});
 				break;
 			case "safari":
@@ -84,7 +84,85 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 					isMaximized: false,
 					position: { x: 150, y: 100 },
 					size: { width: 800, height: 600 },
-					appIcon: "/icons/safari.svg",
+					appIcon: icon,
+				});
+				break;
+			case "mail":
+				openWindow({
+					id: "mail",
+					title: "Mail",
+					content: <div className="flex items-center justify-center h-full text-xl">Mail 앱 (준비 중)</div>,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 120, y: 80 },
+					size: { width: 750, height: 550 },
+					appIcon: icon,
+				});
+				break;
+			case "messages":
+				openWindow({
+					id: "messages",
+					title: "Messages",
+					content: <div className="flex items-center justify-center h-full text-xl">Messages 앱 (준비 중)</div>,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 130, y: 90 },
+					size: { width: 650, height: 450 },
+					appIcon: icon,
+				});
+				break;
+			case "maps":
+				openWindow({
+					id: "maps",
+					title: "Maps",
+					content: <div className="flex items-center justify-center h-full text-xl">Maps 앱 (준비 중)</div>,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 140, y: 100 },
+					size: { width: 800, height: 600 },
+					appIcon: icon,
+				});
+				break;
+			case "photos":
+				openWindow({
+					id: "photos",
+					title: "Photos",
+					content: <div className="flex items-center justify-center h-full text-xl">Photos 앱 (준비 중)</div>,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 150, y: 110 },
+					size: { width: 700, height: 500 },
+					appIcon: icon,
+				});
+				break;
+			case "facetime":
+				openWindow({
+					id: "facetime",
+					title: "FaceTime",
+					content: <div className="flex items-center justify-center h-full text-xl">FaceTime 앱 (준비 중)</div>,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 160, y: 120 },
+					size: { width: 600, height: 400 },
+					appIcon: icon,
+				});
+				break;
+			case "calendar":
+				openWindow({
+					id: "calendar",
+					title: "Calendar",
+					content: <div className="flex items-center justify-center h-full text-xl">Calendar 앱 (준비 중)</div>,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 170, y: 130 },
+					size: { width: 750, height: 550 },
+					appIcon: icon,
 				});
 				break;
 			default:
@@ -127,7 +205,19 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 				onHoverEnd={() => setIsHovered(false)}
 				onClick={handleClick}
 			>
-				<img src={icon} alt={name} style={{ width: size, height: size }} className="rounded-xl" />
+				<div style={{ width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center" }}>
+					<img
+						src={icon}
+						alt={name}
+						style={{
+							width: "100%",
+							height: "100%",
+							objectFit: "contain",
+							padding: "2px",
+						}}
+						className="rounded-xl"
+					/>
+				</div>
 			</motion.div>
 
 			{/* 앱이 열려있을 때 표시되는 인디케이터 */}

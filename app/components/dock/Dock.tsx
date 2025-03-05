@@ -5,16 +5,16 @@ import { useSystemSettings } from "~/store/SystemSettingsContext";
 
 // 독에 표시할 앱 목록
 const dockItems = [
-	{ id: "finder", name: "Finder", icon: "/icons/finder.svg" },
-	{ id: "safari", name: "Safari", icon: "/icons/safari.svg" },
-	{ id: "notes", name: "Notes", icon: "/icons/notes.svg" },
-	{ id: "settings", name: "Settings", icon: "/icons/settings.svg" },
-	// { id: "mail", name: "Mail", icon: "/icons/mail.png" },
-	// { id: "messages", name: "Messages", icon: "/icons/messages.png" },
-	// { id: "maps", name: "Maps", icon: "/icons/maps.png" },
-	// { id: "photos", name: "Photos", icon: "/icons/photos.png" },
-	// { id: "facetime", name: "FaceTime", icon: "/icons/facetime.png" },
-	// { id: "calendar", name: "Calendar", icon: "/icons/calendar.png" },
+	{ id: "finder", name: "Finder", icon: "/icons/png/finder.png" },
+	{ id: "safari", name: "Safari", icon: "/icons/png/safari.png" },
+	{ id: "notes", name: "Notes", icon: "/icons/png/notes.png" },
+	{ id: "settings", name: "Settings", icon: "/icons/png/settings.png" },
+	// { id: "mail", name: "Mail", icon: "/icons/png/mail.png" },
+	// { id: "messages", name: "Messages", icon: "/icons/png/messages.png" },
+	// { id: "maps", name: "Maps", icon: "/icons/png/maps.png" },
+	// { id: "photos", name: "Photos", icon: "/icons/png/photos.png" },
+	// { id: "facetime", name: "FaceTime", icon: "/icons/png/facetime.png" },
+	// { id: "calendar", name: "Calendar", icon: "/icons/png/calendar.png" },
 ];
 
 export default function Dock() {
