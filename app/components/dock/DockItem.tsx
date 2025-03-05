@@ -6,6 +6,7 @@ import SettingsApp from "~/components/apps/SettingsApp";
 import NotesApp from "~/components/apps/NotesApp";
 import FinderApp from "~/components/apps/FinderApp";
 import SafariApp from "~/components/apps/SafariApp";
+import RoadmapApp from "~/components/apps/RoadmapApp";
 
 interface DockItemProps {
 	id: string;
@@ -44,7 +45,7 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 					isMinimized: false,
 					isMaximized: false,
 					position: { x: 100, y: 50 },
-					size: { width: 700, height: 500 },
+					size: { width: 900, height: 650 },
 					appIcon: icon,
 				});
 				break;
@@ -57,7 +58,20 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 					isMinimized: false,
 					isMaximized: false,
 					position: { x: 100, y: 50 },
-					size: { width: 600, height: 400 },
+					size: { width: 900, height: 650 },
+					appIcon: icon,
+				});
+				break;
+			case "roadmap":
+				openWindow({
+					id: "roadmap",
+					title: "개발 로드맵",
+					content: <RoadmapApp />,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 100, y: 50 },
+					size: { width: 900, height: 650 },
 					appIcon: icon,
 				});
 				break;

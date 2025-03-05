@@ -8,6 +8,7 @@ const dockItems = [
 	{ id: "finder", name: "Finder", icon: "/icons/png/finder.png" },
 	{ id: "safari", name: "Safari", icon: "/icons/png/safari.png" },
 	{ id: "notes", name: "Notes", icon: "/icons/png/notes.png" },
+	{ id: "roadmap", name: "개발 로드맵", icon: "/icons/roadmap.svg" },
 	{ id: "settings", name: "Settings", icon: "/icons/png/settings.png" },
 	// { id: "mail", name: "Mail", icon: "/icons/png/mail.png" },
 	// { id: "messages", name: "Messages", icon: "/icons/png/messages.png" },
