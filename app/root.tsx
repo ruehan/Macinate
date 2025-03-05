@@ -2,6 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/reac
 import type { LinksFunction } from "@remix-run/node";
 import { WindowProvider } from "~/store/WindowContext";
 import { FileSystemProvider } from "~/store/FileSystemContext";
+import SpotlightProvider from "~/components/spotlight/SpotlightProvider";
 
 import "./tailwind.css";
 
@@ -40,7 +41,9 @@ export default function App() {
 	return (
 		<WindowProvider>
 			<FileSystemProvider>
-				<Outlet />
+				<SpotlightProvider>
+					<Outlet />
+				</SpotlightProvider>
 			</FileSystemProvider>
 		</WindowProvider>
 	);
