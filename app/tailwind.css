@@ -2,59 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-	@apply bg-white text-black dark:bg-gray-950 dark:text-white;
-	color-scheme: light;
-
-	@media (prefers-color-scheme: dark) {
-		color-scheme: dark;
-	}
-}
-
-/* 기본 텍스트 색상 설정 */
+/* 기본 색상 설정 */
 @layer base {
+	html,
 	body {
-		@apply text-black;
-	}
-
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		@apply text-black;
-	}
-
-	p,
-	span,
-	div {
-		@apply text-black;
-	}
-
-	button,
-	input,
-	select,
-	textarea {
-		@apply text-black;
-	}
-
-	/* 다크 모드 설정 */
-	.dark body,
-	.dark h1,
-	.dark h2,
-	.dark h3,
-	.dark h4,
-	.dark h5,
-	.dark h6,
-	.dark p,
-	.dark span,
-	.dark div,
-	.dark button,
-	.dark input,
-	.dark select,
-	.dark textarea {
-		@apply text-white;
+		@apply bg-white text-black dark:bg-gray-900 dark:text-white;
 	}
 }

@@ -20,14 +20,14 @@ export const links: LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="ko">
+		<html lang="ko" className="light dark:dark">
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<Meta />
 				<Links />
 			</head>
-			<body className="font-sans antialiased text-black bg-white">
+			<body className="font-sans antialiased">
 				{children}
 				<ScrollRestoration />
 				<Scripts />
