@@ -9,12 +9,12 @@ const dockItems = [
 	{ id: "safari", name: "Safari", icon: "/icons/safari.svg" },
 	{ id: "notes", name: "Notes", icon: "/icons/notes.svg" },
 	{ id: "settings", name: "Settings", icon: "/icons/settings.svg" },
-	{ id: "mail", name: "Mail", icon: "/icons/mail.png" },
-	{ id: "messages", name: "Messages", icon: "/icons/messages.png" },
-	{ id: "maps", name: "Maps", icon: "/icons/maps.png" },
-	{ id: "photos", name: "Photos", icon: "/icons/photos.png" },
-	{ id: "facetime", name: "FaceTime", icon: "/icons/facetime.png" },
-	{ id: "calendar", name: "Calendar", icon: "/icons/calendar.png" },
+	// { id: "mail", name: "Mail", icon: "/icons/mail.png" },
+	// { id: "messages", name: "Messages", icon: "/icons/messages.png" },
+	// { id: "maps", name: "Maps", icon: "/icons/maps.png" },
+	// { id: "photos", name: "Photos", icon: "/icons/photos.png" },
+	// { id: "facetime", name: "FaceTime", icon: "/icons/facetime.png" },
+	// { id: "calendar", name: "Calendar", icon: "/icons/calendar.png" },
 ];
 
 export default function Dock() {
@@ -22,7 +22,6 @@ export default function Dock() {
 	const [isVisible, setIsVisible] = useState(true);
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-	// 독 자동 숨김 기능
 	useEffect(() => {
 		if (!state.dock.autohide) {
 			setIsVisible(true);
@@ -65,11 +64,6 @@ export default function Dock() {
 		}
 	};
 
-	// 독 아이템 크기 계산
-	const getItemSize = () => {
-		return state.dock.size;
-	};
-
 	return (
 		<motion.div
 			className={`flex justify-center z-50 fixed ${getDockPositionStyle()}`}
@@ -83,16 +77,7 @@ export default function Dock() {
 		>
 			<div className={`p-2 rounded-2xl flex ${state.dock.position === "bottom" ? "flex-row" : "flex-col"} items-center shadow-dock bg-macos-dock backdrop-blur-2xl`}>
 				{dockItems.map((item) => (
-					<DockItem
-						key={item.id}
-						id={item.id}
-						name={item.name}
-						icon={item.icon}
-						size={getItemSize()}
-						magnification={state.dock.magnification}
-						magnificationLevel={state.dock.magnificationLevel}
-						position={state.dock.position}
-					/>
+					<DockItem key={item.id} id={item.id} name={item.name} icon={item.icon} position={state.dock.position} />
 				))}
 			</div>
 		</motion.div>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useWindow } from "~/store/WindowContext";
+import { useSystemSettings } from "~/store/SystemSettingsContext";
 import SettingsApp from "~/components/apps/SettingsApp";
 import NotesApp from "~/components/apps/NotesApp";
 import FinderApp from "~/components/apps/FinderApp";
@@ -10,22 +11,29 @@ interface DockItemProps {
 	id: string;
 	name: string;
 	icon: string;
-	size?: number;
-	magnification?: boolean;
-	magnificationLevel?: number;
 	position?: "bottom" | "left" | "right";
 }
 
-export default function DockItem({ id, name, icon, size = 60, magnification = true, magnificationLevel = 1.5, position = "bottom" }: DockItemProps) {
+export default function DockItem({ id, name, icon, position = "bottom" }: DockItemProps) {
 	const [isHovered, setIsHovered] = useState(false);
 	const { openWindow, state } = useWindow();
+	const { state: systemSettings } = useSystemSettings();
 
-	// 앱이 현재 열려있는지 확인
+	const [size, setSize] = useState(60);
+	const [magnification, setMagnification] = useState(true);
+	const [magnificationLevel, setMagnificationLevel] = useState(1.5);
+	const [dockPosition, setDockPosition] = useState(position);
+
+	useEffect(() => {
+		setSize(systemSettings.dock.size);
+		setMagnification(systemSettings.dock.magnification);
+		setMagnificationLevel(systemSettings.dock.magnificationLevel);
+		setDockPosition(systemSettings.dock.position || position);
+	}, [systemSettings, position]);
+
 	const isAppOpen = state.windows.some((window) => window.id === id && window.isOpen && !window.isMinimized);
 
-	// 앱 아이콘 클릭 시 창 열기
 	const handleClick = () => {
-		// 앱 ID에 따라 다른 앱 열기
 		switch (id) {
 			case "settings":
 				openWindow({
@@ -80,18 +88,15 @@ export default function DockItem({ id, name, icon, size = 60, magnification = tr
 				});
 				break;
 			default:
-				// 기타 앱은 아직 구현되지 않음
 				alert(`${name} 앱은 아직 구현되지 않았습니다.`);
 				break;
 		}
 	};
 
-	// 확대 효과 계산
 	const scale = magnification && isHovered ? magnificationLevel : 1;
 
-	// 독 위치에 따른 스타일 계산
 	const getMarginStyle = () => {
-		if (position === "bottom") {
+		if (dockPosition === "bottom") {
 			return { marginLeft: 4, marginRight: 4 };
 		} else {
 			return { marginTop: 4, marginBottom: 4 };
@@ -103,7 +108,7 @@ export default function DockItem({ id, name, icon, size = 60, magnification = tr
 			{/* 앱 이름 툴팁 */}
 			<div
 				className={`absolute ${
-					position === "bottom" ? "bottom-full mb-2" : position === "left" ? "left-full ml-2" : "right-full mr-2"
+					dockPosition === "bottom" ? "bottom-full mb-2" : dockPosition === "left" ? "left-full ml-2" : "right-full mr-2"
 				} bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap`}
 			>
 				{name}
@@ -114,8 +119,8 @@ export default function DockItem({ id, name, icon, size = 60, magnification = tr
 				className="flex items-center justify-center cursor-pointer"
 				animate={{
 					scale,
-					y: position === "bottom" ? (isHovered ? -10 : 0) : 0,
-					x: position === "left" ? (isHovered ? 10 : 0) : position === "right" ? (isHovered ? -10 : 0) : 0,
+					y: dockPosition === "bottom" ? (isHovered ? -10 : 0) : 0,
+					x: dockPosition === "left" ? (isHovered ? 10 : 0) : dockPosition === "right" ? (isHovered ? -10 : 0) : 0,
 				}}
 				transition={{ type: "spring", stiffness: 300, damping: 20 }}
 				onHoverStart={() => setIsHovered(true)}
@@ -129,9 +134,9 @@ export default function DockItem({ id, name, icon, size = 60, magnification = tr
 			{isAppOpen && (
 				<div
 					className={`absolute ${
-						position === "bottom"
+						dockPosition === "bottom"
 							? "bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1"
-							: position === "left"
+							: dockPosition === "left"
 							? "left-0 top-1/2 transform -translate-y-1/2 w-1 h-1"
 							: "right-0 top-1/2 transform -translate-y-1/2 w-1 h-1"
 					} bg-white rounded-full`}
