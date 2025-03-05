@@ -63,7 +63,7 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			left: 0,
 			top: 0,
 			width: "100%",
-			height: "calc(100% - 28px)", // 메뉴바 높이 제외
+			height: "100%",
 			transition: { duration: 0.3 },
 		},
 	};
@@ -88,35 +88,6 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			};
 		}
 	}, [window.isFocused, onFocus]);
-
-	// 더블 탭 처리를 위한 상태와 타이머
-	const [lastTapTime, setLastTapTime] = useState(0);
-	const doubleTapDelay = 300; // 더블 탭 인식 시간 (밀리초)
-
-	// 터치 이벤트 처리
-	const handleTouchStart = (e: React.TouchEvent) => {
-		// 컨텐츠 영역에서는 더블 탭 처리하지 않음
-		if (contentRef.current && contentRef.current.contains(e.target as Node)) {
-			return;
-		}
-
-		// 리사이즈 핸들에서는 더블 탭 처리하지 않음
-		if ((e.target as HTMLElement).classList.contains("resize-handle")) {
-			return;
-		}
-
-		const currentTime = new Date().getTime();
-		const tapLength = currentTime - lastTapTime;
-
-		if (tapLength < doubleTapDelay && tapLength > 0) {
-			// 더블 탭 감지됨
-			e.preventDefault();
-			onMaximize();
-			setLastTapTime(0);
-		} else {
-			setLastTapTime(currentTime);
-		}
-	};
 
 	// 드래그 시작 처리 함수
 	const handleDragStart = (e: React.MouseEvent) => {
@@ -206,7 +177,6 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			initial="open"
 			onMouseDown={handleDragStart}
 			onMouseUp={handleDragEnd}
-			onTouchStart={handleTouchStart}
 		>
 			{/* 드래그 핸들 (숨겨진 요소) */}
 			<div ref={dragHandleRef as React.RefObject<HTMLDivElement>} className="hidden" />
@@ -217,7 +187,7 @@ export default function WindowFrame({ window, onClose, onMinimize, onMaximize, o
 			</div>
 
 			{/* 창 내용 */}
-			<div ref={contentRef} className="h-full overflow-auto p-4">
+			<div ref={contentRef} className="h-[100%] overflow-auto p-4 pb-8">
 				{children}
 			</div>
 
