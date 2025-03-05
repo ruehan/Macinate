@@ -1,16 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
 import WindowManager from "~/components/window/WindowManager";
+import { useSystemSettings } from "~/store/SystemSettingsContext";
 
 interface DesktopProps {
 	children: React.ReactNode;
 }
 
 export default function Desktop({ children }: DesktopProps) {
+	const { state } = useSystemSettings();
+
 	return (
 		<motion.div
 			className="flex-1 bg-cover bg-center overflow-hidden relative"
-			style={{ backgroundImage: "url(/wallpaper.jpg)" }}
+			style={{ backgroundImage: `url(${state.wallpaper})` }}
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 1 }}

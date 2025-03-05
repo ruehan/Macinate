@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWindow } from "~/store/WindowContext";
 import NotesApp from "~/components/apps/NotesApp";
-import WelcomeApp from "../apps/WelcomeApp";
-import FinderApp from "../apps/FinderApp";
+import SettingsApp from "~/components/apps/SettingsApp";
 
 interface SpotlightProps {
 	isOpen: boolean;
@@ -51,11 +50,14 @@ export default function Spotlight({ isOpen, onClose }: SpotlightProps) {
 			{ id: "notes", title: "Notes", type: "app", icon: "/icons/notes.svg" },
 			{ id: "calculator", title: "Calculator", type: "app", icon: "/icons/calculator.svg" },
 			{ id: "welcome", title: "Welcome", type: "app", icon: "/icons/welcome.svg" },
+			{ id: "settings", title: "System Settings", type: "app", icon: "/icons/settings.svg" },
 		].filter((app) => app.title.toLowerCase().includes(lowerTerm));
 
 		const settings = [
 			{ id: "display", title: "Display Settings", type: "setting", icon: "/icons/settings.svg" },
 			{ id: "sound", title: "Sound Settings", type: "setting", icon: "/icons/settings.svg" },
+			{ id: "dock", title: "Dock Settings", type: "setting", icon: "/icons/settings.svg" },
+			{ id: "wallpaper", title: "Wallpaper Settings", type: "setting", icon: "/icons/settings.svg" },
 		].filter((setting) => setting.title.toLowerCase().includes(lowerTerm));
 
 		const notes: any[] = [];
@@ -114,6 +116,19 @@ export default function Spotlight({ isOpen, onClose }: SpotlightProps) {
 					appIcon: "/icons/notes.svg",
 				});
 				break;
+			case "settings":
+				openWindow({
+					id: "settings",
+					title: "System Settings",
+					content: <SettingsApp />,
+					isOpen: true,
+					isMinimized: false,
+					isMaximized: false,
+					position: { x: 100, y: 50 },
+					size: { width: 700, height: 500 },
+					appIcon: "/icons/settings.svg",
+				});
+				break;
 			case "calculator":
 				openWindow({
 					id: "calculator",
@@ -131,7 +146,7 @@ export default function Spotlight({ isOpen, onClose }: SpotlightProps) {
 				openWindow({
 					id: "finder",
 					title: "Finder",
-					content: <FinderApp />,
+					content: <div>Finder App</div>, // 실제 Finder 컴포넌트로 교체 필요
 					isOpen: true,
 					isMinimized: false,
 					isMaximized: false,
@@ -144,7 +159,7 @@ export default function Spotlight({ isOpen, onClose }: SpotlightProps) {
 				openWindow({
 					id: "welcome",
 					title: "Welcome to Macinate",
-					content: <WelcomeApp />,
+					content: <div>Welcome App</div>, // 실제 Welcome 컴포넌트로 교체 필요
 					isOpen: true,
 					isMinimized: false,
 					isMaximized: false,
@@ -173,8 +188,8 @@ export default function Spotlight({ isOpen, onClose }: SpotlightProps) {
 	const openSettingsApp = (settingId: string) => {
 		openWindow({
 			id: "settings",
-			title: "Settings",
-			content: <div>Settings App</div>, // 실제 Settings 컴포넌트로 교체 필요
+			title: "System Settings",
+			content: <SettingsApp />,
 			isOpen: true,
 			isMinimized: false,
 			isMaximized: false,

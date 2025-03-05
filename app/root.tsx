@@ -3,6 +3,7 @@ import type { LinksFunction } from "@remix-run/node";
 import { WindowProvider } from "~/store/WindowContext";
 import { FileSystemProvider } from "~/store/FileSystemContext";
 import SpotlightProvider from "~/components/spotlight/SpotlightProvider";
+import { SystemSettingsProvider } from "~/store/SystemSettingsContext";
 
 import "./tailwind.css";
 
@@ -41,9 +42,11 @@ export default function App() {
 	return (
 		<WindowProvider>
 			<FileSystemProvider>
-				<SpotlightProvider>
-					<Outlet />
-				</SpotlightProvider>
+				<SystemSettingsProvider>
+					<SpotlightProvider>
+						<Outlet />
+					</SpotlightProvider>
+				</SystemSettingsProvider>
 			</FileSystemProvider>
 		</WindowProvider>
 	);
