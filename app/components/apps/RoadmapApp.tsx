@@ -14,103 +14,151 @@ interface RoadmapItem {
 	createdAt: string;
 }
 
-// 초기 데이터
+// 초기 데이터 - 깃 커밋 내역 기반
 const initialItems: RoadmapItem[] = [
 	{
 		id: "1",
-		title: "바탕화면 아이콘 구현",
-		description: "바탕화면에 앱 아이콘을 추가하고 클릭 시 앱 실행 기능 구현",
+		title: "기본 레이아웃 및 UI 구현",
+		description: "Mac OS 기본 레이아웃, 상단 메뉴바, 애플 로고, 상태 아이콘 구현",
 		status: "completed",
 		priority: "high",
-		createdAt: "2023-10-15T09:30:00.000Z",
+		createdAt: "2025-03-04T10:00:00.000Z",
 	},
 	{
 		id: "2",
-		title: "창 관리 시스템 구현",
-		description: "창 열기, 닫기, 최소화, 최대화, 이동, 크기 조절 기능 구현",
+		title: "하단 Dock 구현",
+		description: "화면 하단에 앱 독 추가, 위치 조정, 아이콘 변경 및 앱 실행 기능 구현",
 		status: "completed",
 		priority: "high",
-		createdAt: "2023-10-18T14:20:00.000Z",
+		createdAt: "2025-03-04T11:30:00.000Z",
 	},
 	{
 		id: "3",
-		title: "독(Dock) 구현",
-		description: "화면 하단에 앱 독 추가 및 앱 실행 기능 구현",
+		title: "윈도우 관리 시스템 구현",
+		description: "창 열기, 닫기, 최소화, 최대화, 이동, 크기 조절 기능 및 윈도우 상태 관리 로직 구현",
 		status: "completed",
-		priority: "medium",
-		createdAt: "2023-10-25T11:45:00.000Z",
+		priority: "high",
+		createdAt: "2025-03-04T14:20:00.000Z",
 	},
 	{
 		id: "4",
-		title: "메뉴바 구현",
-		description: "화면 상단에 메뉴바 추가 및 기본 메뉴 기능 구현",
-		status: "in-progress",
-		priority: "medium",
-		createdAt: "2023-11-02T16:10:00.000Z",
+		title: "파일 시스템 및 Finder 구현",
+		description: "파일 시스템 컨텍스트 추가 및 Finder 앱 구현으로 파일 및 폴더 탐색 기능 제공",
+		status: "completed",
+		priority: "high",
+		createdAt: "2025-03-04T16:45:00.000Z",
 	},
 	{
 		id: "5",
-		title: "파일 시스템 구현",
-		description: "파인더 앱에서 파일 및 폴더 탐색 기능 구현",
-		status: "planned",
-		priority: "high",
-		createdAt: "2023-11-10T10:00:00.000Z",
+		title: "Safari 브라우저 구현",
+		description: "웹 브라우징 기능을 제공하는 Safari 앱 구현 및 Dock에 추가",
+		status: "completed",
+		priority: "medium",
+		createdAt: "2025-03-04T18:30:00.000Z",
 	},
 	{
 		id: "6",
-		title: "다크 모드 지원",
-		description: "전체 UI에 다크 모드 테마 적용 기능 구현",
-		status: "planned",
+		title: "메모 앱 구현",
+		description: "텍스트 노트를 작성하고 저장할 수 있는 메모 앱 구현",
+		status: "completed",
 		priority: "medium",
-		createdAt: "2023-11-15T09:20:00.000Z",
+		createdAt: "2025-03-05T09:15:00.000Z",
 	},
 	{
 		id: "7",
-		title: "로그인 시스템 구현",
-		description: "사용자 인증 및 로그인 화면 구현",
+		title: "Spotlight 검색 구현",
+		description: "시스템 전체 검색 기능을 제공하는 Spotlight 검색 기능 구현",
 		status: "completed",
-		priority: "high",
-		createdAt: "2023-11-05T13:40:00.000Z",
+		priority: "medium",
+		createdAt: "2025-03-05T10:30:00.000Z",
 	},
 	{
 		id: "8",
 		title: "시스템 설정 앱 구현",
-		description: "시스템 설정을 변경할 수 있는 앱 구현",
-		status: "in-progress",
-		priority: "medium",
-		createdAt: "2023-11-20T15:30:00.000Z",
+		description: "배경화면, 독 설정 등 시스템 환경을 변경할 수 있는 설정 앱 구현",
+		status: "completed",
+		priority: "high",
+		createdAt: "2025-03-05T11:45:00.000Z",
 	},
 	{
 		id: "9",
+		title: "로그인 시스템 구현",
+		description: "사용자 인증 및 로그인 화면 구현으로 보안 기능 추가",
+		status: "completed",
+		priority: "high",
+		createdAt: "2025-03-05T14:20:00.000Z",
+	},
+	{
+		id: "10",
+		title: "UI 버그 수정",
+		description: "윈도우 내부 화면이 짤리는 문제, 색상 표시 오류, 독 크기 적용 문제 등 다양한 UI 버그 수정",
+		status: "completed",
+		priority: "medium",
+		createdAt: "2025-03-05T15:40:00.000Z",
+	},
+	{
+		id: "11",
+		title: "로드맵 앱 개선",
+		description: "로드맵 앱의 UI 개선 및 기능 확장 (그리드/리스트 보기, 정렬, 필터링 등)",
+		status: "completed",
+		priority: "medium",
+		createdAt: "2025-03-05T16:30:00.000Z",
+	},
+	{
+		id: "12",
+		title: "다크 모드 지원",
+		description: "전체 UI에 다크 모드 테마 적용 기능 구현",
+		status: "planned",
+		priority: "medium",
+		createdAt: "2025-03-06T09:20:00.000Z",
+	},
+	{
+		id: "13",
 		title: "알림 시스템 구현",
 		description: "시스템 알림 및 알림 센터 구현",
 		status: "planned",
 		priority: "low",
-		createdAt: "2023-12-01T11:15:00.000Z",
+		createdAt: "2025-03-07T11:15:00.000Z",
 	},
 	{
-		id: "10",
+		id: "14",
 		title: "멀티태스킹 개선",
 		description: "여러 앱 간의 전환 및 분할 화면 기능 구현",
 		status: "planned",
 		priority: "medium",
-		createdAt: "2023-12-10T14:00:00.000Z",
+		createdAt: "2025-03-08T14:00:00.000Z",
 	},
 	{
-		id: "11",
+		id: "15",
 		title: "앱 스토어 구현",
 		description: "앱 설치 및 관리를 위한 앱 스토어 구현",
 		status: "planned",
 		priority: "low",
-		createdAt: "2023-12-15T10:30:00.000Z",
+		createdAt: "2025-03-10T10:30:00.000Z",
 	},
 	{
-		id: "12",
+		id: "16",
 		title: "위젯 시스템 구현",
 		description: "바탕화면에 위젯을 추가하고 관리할 수 있는 기능 구현",
 		status: "planned",
 		priority: "medium",
-		createdAt: "2023-12-20T09:45:00.000Z",
+		createdAt: "2025-03-12T09:45:00.000Z",
+	},
+	{
+		id: "17",
+		title: "성능 최적화",
+		description: "앱 전반의 성능 개선 및 메모리 사용량 최적화",
+		status: "planned",
+		priority: "high",
+		createdAt: "2025-03-15T13:00:00.000Z",
+	},
+	{
+		id: "18",
+		title: "접근성 기능 개선",
+		description: "화면 확대/축소, 고대비 모드, 스크린 리더 지원 등 접근성 기능 추가",
+		status: "planned",
+		priority: "medium",
+		createdAt: "2025-03-18T11:30:00.000Z",
 	},
 ];
 
@@ -201,37 +249,42 @@ const RoadmapApp: React.FC = () => {
 	};
 
 	// 날짜 포맷팅
-	const formatDate = (dateString: string) => {
-		const date = new Date(dateString);
+	const formatDate = (dateString: string, status: string) => {
+		// 예정된 항목은 날짜를 표시하지 않음
+		if (status === "planned") {
+			return "";
+		}
+
+		// UTC 시간을 한국 시간(KST)으로 변환 (UTC+9)
+		const utcDate = new Date(dateString);
+		const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000);
+
 		const now = new Date();
-		const diffTime = Math.abs(now.getTime() - date.getTime());
-		const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+		const kstNow = new Date(now.getTime() + 9 * 60 * 60 * 1000);
 
-		// 오늘
-		if (date.toDateString() === now.toDateString()) {
-			return `오늘 ${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+		const today = new Date(kstNow.getFullYear(), kstNow.getMonth(), kstNow.getDate());
+		const yesterday = new Date(today);
+		yesterday.setDate(yesterday.getDate() - 1);
+
+		// 날짜 포맷 (시간 제외)
+		const options: Intl.DateTimeFormatOptions = {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+			timeZone: "Asia/Seoul",
+		};
+
+		const kstDateString = kstDate.toDateString();
+		const todayString = today.toDateString();
+		const yesterdayString = yesterday.toDateString();
+
+		if (kstDateString === todayString) {
+			return "오늘";
+		} else if (kstDateString === yesterdayString) {
+			return "어제";
+		} else {
+			return kstDate.toLocaleDateString("ko-KR", options);
 		}
-
-		// 어제
-		const yesterday = new Date(now);
-		yesterday.setDate(now.getDate() - 1);
-		if (date.toDateString() === yesterday.toDateString()) {
-			return `어제 ${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
-		}
-
-		// 7일 이내
-		if (diffDays < 7) {
-			const days = ["일", "월", "화", "수", "목", "금", "토"];
-			return `${days[date.getDay()]}요일 ${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
-		}
-
-		// 1년 이내
-		if (date.getFullYear() === now.getFullYear()) {
-			return `${date.getMonth() + 1}월 ${date.getDate()}일`;
-		}
-
-		// 1년 이상
-		return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 	};
 
 	// 서버 사이드 렌더링 중에는 간단한 로딩 표시
@@ -365,7 +418,7 @@ const RoadmapApp: React.FC = () => {
 										<span className={`text-xs px-2 py-1 rounded-full ${getPriorityBgColor(item.priority)}`}>
 											{item.priority === "low" ? "낮은 우선순위" : item.priority === "medium" ? "중간 우선순위" : "높은 우선순위"}
 										</span>
-										<div className="text-xs text-gray-400">{formatDate(item.createdAt)}</div>
+										<div className="text-xs text-gray-400">{formatDate(item.createdAt, item.status)}</div>
 									</div>
 								</div>
 							</motion.div>
@@ -391,7 +444,7 @@ const RoadmapApp: React.FC = () => {
 									</div>
 								</div>
 								<p className="text-sm text-gray-600 mb-2">{item.description}</p>
-								<div className="text-xs text-gray-400 text-right">{formatDate(item.createdAt)}</div>
+								{formatDate(item.createdAt, item.status) && <div className="text-xs text-gray-400 text-right">{formatDate(item.createdAt, item.status)}</div>}
 							</motion.div>
 						))}
 					</div>

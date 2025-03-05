@@ -71,7 +71,7 @@ export default function DockItem({ id, name, icon, position = "bottom" }: DockIt
 					isMinimized: false,
 					isMaximized: false,
 					position: { x: 100, y: 50 },
-					size: { width: 900, height: 650 },
+					size: { width: 1000, height: 650 },
 					appIcon: icon,
 				});
 				break;
