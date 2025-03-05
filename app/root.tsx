@@ -4,6 +4,7 @@ import { WindowProvider } from "~/store/WindowContext";
 import { FileSystemProvider } from "~/store/FileSystemContext";
 import SpotlightProvider from "~/components/spotlight/SpotlightProvider";
 import { SystemSettingsProvider } from "~/store/SystemSettingsContext";
+import { AuthProvider } from "~/store/AuthContext";
 
 import "./tailwind.css";
 
@@ -43,9 +44,11 @@ export default function App() {
 		<WindowProvider>
 			<FileSystemProvider>
 				<SystemSettingsProvider>
-					<SpotlightProvider>
-						<Outlet />
-					</SpotlightProvider>
+					<AuthProvider>
+						<SpotlightProvider>
+							<Outlet />
+						</SpotlightProvider>
+					</AuthProvider>
 				</SystemSettingsProvider>
 			</FileSystemProvider>
 		</WindowProvider>

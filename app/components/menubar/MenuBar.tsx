@@ -5,9 +5,11 @@ import StatusIcons from "./StatusIcons";
 import MenuItem from "./MenuItem";
 import { useWindow } from "~/store/WindowContext";
 import { getAppMenus, menuLabels, menuOrder } from "~/data/appMenus";
+import { useAuth } from "~/store/AuthContext";
 
 export default function MenuBar() {
 	const { state } = useWindow();
+	const { sleep, restart } = useAuth();
 	const [currentTime, setCurrentTime] = useState(
 		new Date().toLocaleTimeString("ko-KR", {
 			hour: "2-digit",
@@ -38,6 +40,26 @@ export default function MenuBar() {
 
 	const handleAppleMenuClick = (action: string) => {
 		console.log("Apple menu action:", action);
+
+		switch (action) {
+			case "sleep":
+				sleep();
+				break;
+			case "restart":
+				restart();
+				break;
+			case "shutdown":
+				restart(); // 종료도 재시작과 동일하게 처리
+				break;
+			case "logout":
+				restart();
+				break;
+			case "preferences":
+				// 시스템 환경설정 앱 열기 (구현 예정)
+				break;
+			default:
+				break;
+		}
 	};
 
 	return (
