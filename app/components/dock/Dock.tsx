@@ -6,13 +6,13 @@ import DockItem from "./DockItem";
 const dockItems = [
 	{ id: "finder", name: "Finder", icon: "/icons/finder.svg" },
 	{ id: "safari", name: "Safari", icon: "/icons/safari.svg" },
+	{ id: "notes", name: "Notes", icon: "/icons/notes.svg" },
 	{ id: "mail", name: "Mail", icon: "/icons/mail.png" },
 	{ id: "messages", name: "Messages", icon: "/icons/messages.png" },
 	{ id: "maps", name: "Maps", icon: "/icons/maps.png" },
 	{ id: "photos", name: "Photos", icon: "/icons/photos.png" },
 	{ id: "facetime", name: "FaceTime", icon: "/icons/facetime.png" },
 	{ id: "calendar", name: "Calendar", icon: "/icons/calendar.png" },
-	{ id: "notes", name: "Notes", icon: "/icons/notes.png" },
 	{ id: "reminders", name: "Reminders", icon: "/icons/reminders.png" },
 ];
 
